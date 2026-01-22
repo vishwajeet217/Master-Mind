@@ -1,21 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
-    />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
-    <title>Happy Birthday Praneeta 🎂</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Praneeta | From Vishwajeet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --primary: #ff4757;
+            --secondary: #2ed573;
+            --bg-gradient: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        /* Animated Background */
+        .background-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floater {
+            position: absolute;
+            bottom: -100px;
+            font-size: 2.5rem;
+            opacity: 0.7;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-110vh) rotate(360deg); }
+        }
+
+        /* Screens */
+        .screen {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: opacity 0.5s ease;
+        }
+
+        /* --- SCREEN 1: COUNTDOWN --- */
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            color: #ff6b81;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 0px #fff;
+        }
+
+        .countdown-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            min-width: 100px;
+            border-bottom: 5px solid #ff4757;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .time-box small {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            color: #666;
+        }
+
+        /* The Magic Button */
+        .magic-btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Fredoka One', cursive;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-top: 20px;
+        }
+
+        /* State: Locked */
+        .magic-btn.locked {
+            background-color: #bdc3c7;
+            color: #7f8c8d;
+            cursor: not-allowed;
+            transform: scale(0.95);
+        }
+
+        /* State: Unlocked */
+        .magic-btn.unlocked {
+            background: #ff4757;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        .magic-btn.unlocked:hover {
+            transform: scale(1.1);
+            background: #ff6b81;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 71, 87, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+        }
+
+        /* --- SCREEN 2: SURPRISE --- */
+        #screen-2 {
+            display: none; /* Hidden by default */
+        }
+
+        .wishes-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 800px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .wishes-card p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 30px;
+        }
+
+        .photo-item {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: rotate(-2deg);
+            transition: transform 0.3s;
+        }
+
+        .photo-item:nth-child(even) { transform: rotate(2deg); }
+
+        .photo-item:hover {
+            transform: scale(1.05) rotate(0deg);
+            z-index: 10;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .back-btn {
+            background: #2ed573;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 50px;
+            box-shadow: 0 5px 15px rgba(46, 213, 115, 0.4);
+        }
+        
+        .back-btn:hover { background: #26af61; }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .time-box { min-width: 70px; padding: 10px; }
+            .time-box span { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-container" id="bg-container"></div>
+
+    <div id="screen-1" class="screen">
+        <h3>Wait for Your Day...</h3>
+        <h1>Happy Birthday Baccha!</h1>
+        
+        <div class="countdown-container">
+            <div class="time-box"><span id="d">00</span><small>Days</small></div>
+            <div class="time-box"><span id="h">00</span><small>Hours</small></div>
+            <div class="time-box"><span id="m">00</span><small>Mins</small></div>
+            <div class="time-box"><span id="s">00</span><small>Secs</small></div>
+        </div>
+
+        <p id="lock-msg">Ruko jara sabar karo 😗</p>
+        
+        <button id="surpriseBtn" class="magic-btn locked" disabled onclick="goToSurprise()">
+            🔒 babe tame lagega 
+        </button>
+    </div>
+
+    <div id="screen-2" class="screen">
+        <h1>Happy Birthday little babee 🎂</h1>
+        
+        <div class="wishes-card">
+            <p>
+                My little Princess🤴,<br><br>
+                My Sweet potato my babe my little girl you are the best person of my life, 
+                mai aur mera aasirwad aapke saath hamesha rahega. Mai kabhi chhor ke nhi jaunga. 
+                Koi problem ho to bataya kr bina bataye problem km nhi hota batane se ideas milta hai to share kiya kr babe.
+                Jyada to nahi bss itna hin tha bss khuss raho aur rehne doo 😘 Happy Birthday 😘😘 !
+                <br><br>
+                <h3 style="font-family: 'Dancing Script'; font-size: 1rem; color: #ff6b6b;">-Your Bestfriend, Vishwajeet</h3>
+            </p>
+        </div>
+
+            <div id="container">
+            <h2>PICTURES</h2>
+            </div>
+
+        <div class="gallery">
+            <div class="photo-item"><img src="C:\Users\vishw\Downloads\Picture.1.jpeg"/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=60" alt="Praneeta 1"></div>
+            <div class="photo-item"><img src="C:\Users\vishw\Downloads\Picture.2.jpeg"/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=60" alt="Praneeta 2"></div>
+            <div class="photo-item"><img src="C:\Users\vishw\Downloads\Pictureee.8.jpeg"/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=60" alt="Praneeta 3"></div>
+            <div class="photo-item"><img src="C:\Users\vishw\Downloads\Picture.6.jpeg"/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=500&q=60" alt="Praneeta 4"></div>
+            <div class="photo-item"><img src="C:\Users\vishw\Downloads\picturee.5.jpeg"/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=500&q=60" alt="Praneeta 5"></div>
+            <div class="photo-item"><img src="C:\Users\vishw\Downloads\Picturee.8.jpeg"/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=60" alt="Praneeta 6"></div>
+            <div class="photo-item"><img src="C:\Users\vishw\Downloads\picture.7.jpeg"/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=500&q=60" alt="Praneeta 6"></div>
+            <div class="photo-item"><img src="C:\Users\vishw\Downloads\Picture.3.jpeg"/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=500&q=60" alt="Praneeta 6"></div>
+        </div>
+
+        <button class="back-btn" onclick="goBack()">⬅ Back</button>
+    </div>
+
+    <script>
+        // --- 1. SETUP DATE ---
+        // Target Date: Jan 22, 2026 20:50
+        const targetDate = new Date("Jan 22, 2026 20:50:00").getTime();
+        
+        // --- 2. FLOATING BACKGROUND ---
+        function createBalloons() {
+            const container = document.getElementById('bg-container');
+            const items = ['🎈', '🎁', '🎂', '😘', '🧁', '💖'];
+            const count = 100;
+
+            for(let i=0; i<count; i++) {
+                const el = document.createElement('div');
+                el.className = 'floater';
+                el.innerText = items[Math.floor(Math.random() * items.length)];
+                el.style.left = Math.random() * 100 + '%';
+                el.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                el.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(el);
+            }
+        }
+        createBalloons();
+
+        // --- 3. COUNTDOWN & LOCK LOGIC ---
+        const btn = document.getElementById('surpriseBtn');
+        const lockMsg = document.getElementById('lock-msg');
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const gap = targetDate - now;
+
+            // Math Logic
+            const second = 1000;
+            const minute = second * 60;
+            const hour = minute * 60;
+            const day = hour * 24;
+
+            const d = Math.floor(gap / day);
+            const h = Math.floor((gap % day) / hour);
+            const m = Math.floor((gap % hour) / minute);
+            const s = Math.floor((gap % minute) / second);
+
+            // Display
+            document.getElementById('d').innerText = d > 0 ? d : 0;
+            document.getElementById('h').innerText = h > 0 ? h : 0;
+            document.getElementById('m').innerText = m > 0 ? m : 0;
+            document.getElementById('s').innerText = s > 0 ? s : 0;
+
+            // LOCK / UNLOCK LOGIC
+            if (gap <= 0) {
+                // Time is up! UNLOCK
+                unlockButton();
+            } else {
+                // Still counting down
+                lockButton();
+            }
+        }
+
+        function unlockButton() {
+            btn.disabled = false;
+            btn.classList.remove('locked');
+            btn.classList.add('unlocked');
+            btn.innerHTML = "🎁 Open your Surprise! 🎁";
+            lockMsg.style.display = 'none';
+        }
+
+        function lockButton() {
+            btn.disabled = true;
+            btn.classList.add('locked');
+            btn.classList.remove('unlocked');
+            btn.innerHTML = "🔒 Locked until Jan 25";
+            lockMsg.style.display = 'block';
+        }
+
+        // Run timer every second
+        let timer = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Run immediately on load
+
+        // --- 4. NAVIGATION FUNCTIONS ---
+        function goToSurprise() {
+            document.getElementById('screen-1').style.display = 'none';
+            document.getElementById('screen-2').style.display = 'flex';
+            window.scrollTo(0,0);
+        }
+
+        function goBack() {
+            document.getElementById('screen-2').style.display = 'none';
+            document.getElementById('screen-1').style.display = 'flex';
+        }
+
+        /* !!! TEST MODE FOR VISHWAJEET !!!
+           Open your browser Console (F12 -> Console)
+           Type: testMode() and hit Enter.
+           It will instantly unlock the button so you can see the design.
+        */
+        function testMode() {
+            clearInterval(timer); // Stop the real timer
+            document.getElementById('d').innerText = 0;
+            document.getElementById('h').innerText = 0;
+            document.getElementById('m').innerText = 0;
+            document.getElementById('s').innerText = 0;
+            unlockButton();
+            alert("Test Mode Activated: Button Unlocked!");
+        }
+
+    </script>
+</body>
 </html>
